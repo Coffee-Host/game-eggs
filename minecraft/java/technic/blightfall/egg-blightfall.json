@@ -5,16 +5,16 @@
         "version": "PTDL_v2"
     },
     "exported_at": "2024-06-01T19:39:49+00:00",
-    "name": "Blightfall",
+    "name": "整合包｜Blightfall（1.7.10 版本）",
     "author": "aevum@decess.us",
-    "description": "Blightfall is a combination modpack and adventure map about surviving on an alien planet. It uses magic mods and tech mods to create a novel gameplay experience. Can you survive on a world completely covered by Thaumcraft taint?\r\n\r\nhttps://www.technicpack.net/modpack/blightfall.592618",
+    "description": "Blightfall 是一個結合模組包和冒險地圖的生存遊戲，背景設定在一個外星星球上。它使用魔法模組和科技模組來創造新穎的遊戲體驗。你能在一個完全被神秘時代 (Thaumcraft) 腐化覆蓋的世界中生存下來嗎？\r\n\r\nhttps://www.technicpack.net/modpack/blightfall.592618",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "ghcr.io/ptero-eggs/yolks:java_8": "ghcr.io/ptero-eggs/yolks:java_8"
+        "Java 8（1.16.5 版及以下）": "ghcr.io/ptero-eggs/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar Blightfall.jar",
@@ -33,8 +33,8 @@
     },
     "variables": [
         {
-            "name": "Modpack Version",
-            "description": "Version of the modpack to use",
+            "name": "模組包版本",
+            "description": "要使用的模組包版本",
             "env_variable": "MODPACK_VERSION",
             "default_value": "3.1.1-CE",
             "user_viewable": true,

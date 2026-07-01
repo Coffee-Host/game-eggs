@@ -5,22 +5,22 @@
         "update_url": null
     },
     "exported_at": "2026-04-26T20:16:38+02:00",
-    "name": "Magma",
+    "name": "插件、模組｜Magma（特定版本：1.12.2 ~ 1.20.1）",
     "author": "support@pterodactyl.io",
-    "description": "Magma is most powerful Forge server providing you with Forge mods and Bukkit Plugins using Spigot and Paper for Performance Optimization and Stability. Using: https:\/\/github.com\/magmamaintained",
+    "description": "Magma 是最強大的 Forge 伺服器，使用 Spigot 和 Paper 來提供效能優化和穩定性，讓您能同時使用 Forge 模組和 Bukkit 插件。使用來源：https://github.com/magmamaintained",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "Java 8": "ghcr.io\/ptero-eggs\/yolks:java_8",
-        "Java 11": "ghcr.io\/ptero-eggs\/yolks:java_11",
-        "Java 16": "ghcr.io\/ptero-eggs\/yolks:java_16",
-        "Java 17": "ghcr.io\/ptero-eggs\/yolks:java_17",
-        "java 21": "ghcr.io\/ptero-eggs\/yolks:java_21",
-        "java 22": "ghcr.io\/ptero-eggs\/yolks:java_22",
-        "Java 25": "ghcr.io\/ptero-eggs\/yolks:java_25"
+        "Java 25（最新測試版）": "ghcr.io/ptero-eggs/yolks:java_25",
+        "Java 22（最新測試版）": "ghcr.io/ptero-eggs/yolks:java_22",
+        "Java 21（1.20.5 版以上）": "ghcr.io/ptero-eggs/yolks:java_21",
+        "Java 17（1.18 ~ 1.20.4 版）": "ghcr.io/ptero-eggs/yolks:java_17",
+        "Java 16（1.17.x 版）": "ghcr.io/ptero-eggs/yolks:java_16",
+        "Java 11（特定版本）": "ghcr.io/ptero-eggs/yolks:java_11",
+        "Java 8（1.16.5 版及以下）": "ghcr.io/ptero-eggs/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -Xms128M -XX:MaxRAMPercentage=95.0 -jar {{SERVER_JARFILE}}",
@@ -32,24 +32,24 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\n## get release info and download links\r\nLATEST_JSON=$(curl --silent \"https:\/\/api.github.com\/repos\/magmamaintained\/Magma-${MC_VERSION}\/releases\/latest\")\r\nRELEASES=$(curl --silent \"https:\/\/api.github.com\/repos\/magmamaintained\/Magma-${MC_VERSION}\/releases\")\r\n\r\nif [ -z \"${TAG_VERSION}\" ] || [ \"${TAG_VERSION}\" == \"latest\" ]; then\r\n    DOWNLOAD_LINK=$(echo ${LATEST_JSON} | jq .assets | jq -r .[].browser_download_url )\r\nelse\r\n    VERSION_CHECK=$(echo ${RELEASES} | jq -r --arg VERSION \"${TAG_VERSION}\" '.[] | select(.tag_name==$VERSION) | .tag_name')\r\n    if [ \"${TAG_VERSION}\" == \"${VERSION_CHECK}\" ]; then\r\n        DOWNLOAD_LINK=$(echo ${RELEASES} | jq -r --arg VERSION \"${TAG_VERSION}\" '.[] | select(.tag_name==$VERSION) | .assets[].browser_download_url')\r\n    else\r\n        echo -e \"defaulting to latest release\"\r\n        DOWNLOAD_LINK=$(echo ${LATEST_JSON} | jq .assets | jq -r .[].browser_download_url)\r\n    fi\r\nfi\r\n\r\nif [ ! -z \"${DOWNLOAD_LINK}\" ]; then \r\n    if curl --output \/dev\/null --silent --head --fail ${DOWNLOAD_LINK}; then\r\n        echo -e \"link is valid. setting download link to ${DOWNLOAD_LINK}\"\r\n        DOWNLOAD_LINK=${DOWNLOAD_LINK}\r\n    else        \r\n        echo -e \"link is invalid closing out\"\r\n        exit 2\r\n    fi\r\nfi\r\n\r\n\r\necho \"Download Link: '${DOWNLOAD_LINK}'\"\r\n\r\n# Check we found a download link\r\n\r\n# Download server.jar\r\necho -e \"running: curl -sSL -o ${SERVER_JARFILE} ${DOWNLOAD_LINK}\"\r\ncurl -sSL -o ${SERVER_JARFILE} -sSL ${DOWNLOAD_LINK}\r\necho -e \"Install Complete\"",
-            "container": "ghcr.io\/ptero-eggs\/installers:debian",
+            "script": "#!/bin/bash\r\n\r\nmkdir -p /mnt/server\r\ncd /mnt/server\r\n\r\n## get release info and download links\r\nLATEST_JSON=$(curl --silent \"https://api.github.com/repos/magmamaintained/Magma-${MC_VERSION}/releases/latest\")\r\nRELEASES=$(curl --silent \"https://api.github.com/repos/magmamaintained/Magma-${MC_VERSION}/releases\")\r\n\r\nif [ -z \"${TAG_VERSION}\" ] || [ \"${TAG_VERSION}\" == \"latest\" ]; then\r\n    DOWNLOAD_LINK=$(echo ${LATEST_JSON} | jq .assets | jq -r .[].browser_download_url )\r\nelse\r\n    VERSION_CHECK=$(echo ${RELEASES} | jq -r --arg VERSION \"${TAG_VERSION}\" '.[] | select(.tag_name==$VERSION) | .tag_name')\r\n    if [ \"${TAG_VERSION}\" == \"${VERSION_CHECK}\" ]; then\r\n        DOWNLOAD_LINK=$(echo ${RELEASES} | jq -r --arg VERSION \"${TAG_VERSION}\" '.[] | select(.tag_name==$VERSION) | .assets[].browser_download_url')\r\n    else\r\n        echo -e \"defaulting to latest release\"\r\n        DOWNLOAD_LINK=$(echo ${LATEST_JSON} | jq .assets | jq -r .[].browser_download_url)\r\n    fi\r\nfi\r\n\r\nif [ ! -z \"${DOWNLOAD_LINK}\" ]; then \r\n    if curl --output /dev/null --silent --head --fail ${DOWNLOAD_LINK}; then\r\n        echo -e \"link is valid. setting download link to ${DOWNLOAD_LINK}\"\r\n        DOWNLOAD_LINK=${DOWNLOAD_LINK}\r\n    else        \r\n        echo -e \"link is invalid closing out\"\r\n        exit 2\r\n    fi\r\nfi\r\n\r\n\r\necho \"Download Link: '${DOWNLOAD_LINK}'\"\r\n\r\n# Check we found a download link\r\n\r\n# Download server.jar\r\necho -e \"running: curl -sSL -o ${SERVER_JARFILE} ${DOWNLOAD_LINK}\"\r\ncurl -sSL -o ${SERVER_JARFILE} -sSL ${DOWNLOAD_LINK}\r\necho -e \"Install Complete\"",
+            "container": "ghcr.io/ptero-eggs/installers:debian",
             "entrypoint": "bash"
         }
     },
     "variables": [
         {
-            "name": "Server Jar File",
-            "description": "The name of the server jarfile to run the server with.",
+            "name": "伺服器 Jar 檔案",
+            "description": "用於執行伺服器的 jar 檔案名稱。",
             "env_variable": "SERVER_JARFILE",
             "default_value": "server.jar",
             "user_viewable": true,
             "user_editable": false,
-            "rules": "required|regex:\/^([\\w\\d._-]+)(\\.jar)$\/",
+            "rules": "required|regex:/^([\\w\\d._-]+)(\\.jar)$/",
             "field_type": "text"
         },
         {
-            "name": "Minecraft Version",
+            "name": "Minecraft 版本",
             "description": "",
             "env_variable": "MC_VERSION",
             "default_value": "1.20.1",
@@ -59,8 +59,8 @@
             "field_type": "text"
         },
         {
-            "name": "Tag Version",
-            "description": "Optional.\r\n\r\nSpecify the tag version to install. Set latest to install latest",
+            "name": "標籤版本",
+            "description": "選填。\r\n\r\n指定要安裝的標籤版本。設定為 latest 以安裝最新版本。",
             "env_variable": "TAG_VERSION",
             "default_value": "latest",
             "user_viewable": true,

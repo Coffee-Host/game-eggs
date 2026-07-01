@@ -5,19 +5,19 @@
         "update_url": null
     },
     "exported_at": "2024-04-02T11:11:13+02:00",
-    "name": "Cuberite",
+    "name": "核心｜Cuberite（支援至 1.12.2）",
     "author": "parker@parkervcp.com",
-    "description": "A lightweight, fast and extensible game server for Minecraft",
+    "description": "一個輕量、快速且具擴展性的 Minecraft 遊戲伺服器",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "ghcr.io\/ptero-eggs\/yolks:debian": "ghcr.io\/ptero-eggs\/yolks:debian"
+        "ghcr.io/ptero-eggs/yolks:debian": "ghcr.io/ptero-eggs/yolks:debian"
     },
     "file_denylist": [],
-    "startup": ".\/Cuberite",
+    "startup": "./Cuberite",
     "config": {
         "files": "{\r\n    \"settings.ini\": {\r\n        \"parser\": \"ini\",\r\n        \"find\": {\r\n            \"Server.Ports\": \"{{server.build.default.port}}\",\r\n            \"Server.Description\": \"{{server.build.env.SERV_DESC}}\"\r\n        }\r\n    },\r\n    \"webadmin.ini\": {\r\n        \"parser\": \"ini\",\r\n        \"find\": {\r\n            \"User:admin.Password\": \"{{server.build.env.ADMIN_PASS}}\",\r\n            \"WebAdmin.Ports\": \"{{server.build.env.WEB_PORT}}\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"Startup complete\"\r\n}",
@@ -26,15 +26,15 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Cuberite\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\ncd \/mnt\/server\r\n\r\nARCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] && echo \"x86_64\" || echo \"aarch64\")\r\n\r\nwget https:\/\/download.cuberite.org\/linux-${ARCH}\/Cuberite.tar.gz\r\n\r\ntar -xzf Cuberite.tar.gz\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
-            "container": "ghcr.io\/ptero-eggs\/installers:debian",
+            "script": "#!/bin/ash\r\n# Cuberite\r\n#\r\n# Server Files: /mnt/server\r\n\r\ncd /mnt/server\r\n\r\nARCH=$([[ \"$(uname -m)\" == \"x86_64\" ]] && echo \"x86_64\" || echo \"aarch64\")\r\n\r\nwget https://download.cuberite.org/linux-${ARCH}/Cuberite.tar.gz\r\n\r\ntar -xzf Cuberite.tar.gz\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
+            "container": "ghcr.io/ptero-eggs/installers:debian",
             "entrypoint": "bash"
         }
     },
     "variables": [
         {
-            "name": "Server Description",
-            "description": "Server Description",
+            "name": "伺服器描述",
+            "description": "伺服器描述",
             "env_variable": "SERV_DESC",
             "default_value": "Cuberite on Pterodactyl!",
             "user_viewable": true,
@@ -43,8 +43,8 @@
             "field_type": "text"
         },
         {
-            "name": "Admin Password",
-            "description": "The password for the webadmin panel 'admin' user",
+            "name": "管理員密碼",
+            "description": "網頁管理控制台 'admin' 使用者的密碼",
             "env_variable": "ADMIN_PASS",
             "default_value": "ChangeMe",
             "user_viewable": true,
@@ -53,8 +53,8 @@
             "field_type": "text"
         },
         {
-            "name": "WebAdmin Port",
-            "description": "Port for the cuberite webadmin panel.",
+            "name": "WebAdmin 連接埠",
+            "description": "Cuberite 網頁管理控制台的連接埠。",
             "env_variable": "WEB_PORT",
             "default_value": "8080",
             "user_viewable": true,

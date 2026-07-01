@@ -5,16 +5,16 @@
         "update_url": null
     },
     "exported_at": "2024-11-14T17:57:27+02:00",
-    "name": "Tekkit",
+    "name": "整合包｜Tekkit（1.6.4 版本）",
     "author": "contact@zennodes.dk",
-    "description": "Tekkit is set to reignite the same sort of wonder and awe that we all received from booting up Minecraft for the first time. With the skies open, the moon ready to be colonized (by force if need be) and dimensional mysteries to be plied, with tesseracts to be networked, \u201cmeat\u201d to be processed, items to be digitized, and power suits to be manufactured, there is virtually limitless engineering projects to be assembled.",
+    "description": "Tekkit 旨在重新點燃我們第一次啟動 Minecraft 時所感受到的那種驚奇與敬畏。隨著天空的開放，月球準備好被殖民（如果需要的話，可以透過武力），維度謎團等待被探索，超立方體等待被連接，“肉”等待被加工，物品等待被數位化，動力裝甲等待被製造，幾乎有無窮無盡的工程項目等待組裝。",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "Java 8": "ghcr.io\/ptero-eggs\/yolks:java_8"
+        "Java 8（1.16.5 版及以下）": "ghcr.io/ptero-eggs/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar Tekkit.jar",
@@ -26,14 +26,14 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Forge Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\ncd \/mnt\/server\r\n\r\ncurl -sSL https:\/\/servers.technicpack.net\/Technic\/servers\/tekkitmain\/Tekkit_Server_$MODPACK_VERSION.zip -o Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nunzip Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm -rf Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm launch.bat\r\n\r\nrm launch.sh\r\n\r\nif [ ! -f server.properties ]; then\r\n    echo -e \"Downloading MC server.properties\"\r\n    curl -o server.properties https:\/\/raw.githubusercontent.com\/ptero-eggs\/game-eggs\/main\/minecraft\/java\/server.properties\r\nfi\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
-            "container": "ghcr.io\/ptero-eggs\/installers:alpine",
+            "script": "#!/bin/ash\r\n# Forge Installation Script\r\n#\r\n# Server Files: /mnt/server\r\n\r\ncd /mnt/server\r\n\r\ncurl -sSL https://servers.technicpack.net/Technic/servers/tekkitmain/Tekkit_Server_$MODPACK_VERSION.zip -o Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nunzip Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm -rf Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm launch.bat\r\n\r\nrm launch.sh\r\n\r\nif [ ! -f server.properties ]; then\r\n    echo -e \"Downloading MC server.properties\"\r\n    curl -o server.properties https://raw.githubusercontent.com/ptero-eggs/game-eggs/main/minecraft/java/server.properties\r\nfi\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
+            "container": "ghcr.io/ptero-eggs/installers:alpine",
             "entrypoint": "ash"
         }
     },
     "variables": [
         {
-            "name": "Modpack Version",
+            "name": "模組包版本",
             "description": "",
             "env_variable": "MODPACK_VERSION",
             "default_value": "v1.2.9g-2",

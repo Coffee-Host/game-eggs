@@ -5,16 +5,16 @@
         "version": "PTDL_v2"
     },
     "exported_at": "2024-06-01T19:40:16+00:00",
-    "name": "Tekkit Classic",
+    "name": "整合包｜Tekkit Classic（1.2.5 版本）",
     "author": "geoffrey@remedygaming.net",
-    "description": "Created by the Technic team, Tekkit Classic is a modpack for the record breaking sandbox construction game Minecraft. \r\nIt brings together some of the best mods from the Minecraft community for automating, industrializing and powering your worlds and bundles them into one easy download!",
+    "description": "由 Technic 團隊創建，Tekkit Classic 是一款適用於打破紀錄的沙盒建造遊戲《Minecraft》的模組包。\r\n它匯集了 Minecraft 社群中最好的自動化、工業化和為您的世界提供動力的模組，並將它們打包成一個簡單的下載包！",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "Java 8": "ghcr.io/ptero-eggs/yolks:java_8"
+        "Java 8（1.16.5 版及以下）": "ghcr.io/ptero-eggs/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar Tekkit.jar",
@@ -26,14 +26,14 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Forge Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\ncd \/mnt\/server\r\n\r\ncurl -sS https:\/\/servers.technicpack.net\/Technic\/servers\/tekkit\/Tekkit_Server_$MODPACK_VERSION.zip -o Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nunzip Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm -rf Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm launch.bat\r\n\r\nrm launch.sh\r\n\r\nif [ ! -f server.properties ]; then\r\n    echo -e \"Downloading MC server.properties\"\r\n    curl -o server.properties https:\/\/raw.githubusercontent.com\/ptero-eggs\/game-eggs\/main\/minecraft\/java\/server.properties\r\nfi\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
-            "container": "ghcr.io\/ptero-eggs\/installers:alpine",
+            "script": "#!/bin/ash\r\n# Forge Installation Script\r\n#\r\n# Server Files: /mnt/server\r\ncd /mnt/server\r\n\r\ncurl -sS https://servers.technicpack.net/Technic/servers/tekkit/Tekkit_Server_$MODPACK_VERSION.zip -o Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nunzip Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm -rf Tekkit_Server_$MODPACK_VERSION.zip\r\n\r\nrm launch.bat\r\n\r\nrm launch.sh\r\n\r\nif [ ! -f server.properties ]; then\r\n    echo -e \"Downloading MC server.properties\"\r\n    curl -o server.properties https://raw.githubusercontent.com/ptero-eggs/game-eggs/main/minecraft/java/server.properties\r\nfi\r\n\r\n## install end\r\necho \"-----------------------------------------\"\r\necho \"Installation completed...\"\r\necho \"-----------------------------------------\"",
+            "container": "ghcr.io/ptero-eggs/installers:alpine",
             "entrypoint": "ash"
         }
     },
     "variables": [
         {
-            "name": "Modpack Version",
+            "name": "模組包版本",
             "description": "",
             "env_variable": "MODPACK_VERSION",
             "default_value": "3.1.2",

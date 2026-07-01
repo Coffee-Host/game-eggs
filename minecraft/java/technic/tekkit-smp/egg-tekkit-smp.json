@@ -5,17 +5,17 @@
         "update_url": null
     },
     "exported_at": "2024-09-12T21:48:20+02:00",
-    "name": "Tekkit SMP",
+    "name": "整合包｜Tekkit SMP（1.12.2 版本）",
     "author": "lovinoes@lovinoes.de",
-    "description": "Tekkit SMP contains the full range of mods from Tekkit 2, plus the extra mods that were originally dropped in the transition from Technic SSP (to Technic SMP) to Tekkit, in favour of multiplayer and Bukkit support: mainly Thaumcraft, Mystcraft, and Mo' Creatures. The new Tekkit SMP expands on that with various carefully selected Thaumcraft and Mystcraft addons, alongside Mo' Creatures Extended, and smaller custom additions such as Re-Crystallized Wing. Electro-Magic Tools is another starring mod, being an addon to both Industrial Craft and Thaumcraft, combining the worlds of tech and magic.",
+    "description": "Tekkit SMP 包含了 Tekkit 2 的完整模組，並加上了最初從 Technic SSP（到 Technic SMP）轉換至 Tekkit 時為了支援多人遊戲和 Bukkit 而放棄的額外模組：主要是 Thaumcraft（神秘時代）、Mystcraft（秘境）和 Mo' Creatures（更多生物）。新的 Tekkit SMP 在此基礎上擴展，增加了各種精心挑選的 Thaumcraft 和 Mystcraft 附加模組，以及 Mo' Creatures Extended，還有像 Re-Crystallized Wing 等較小的自定義內容。Electro-Magic Tools 也是另一個引人注目的模組，作為 Industrial Craft（工業）和 Thaumcraft 的附加模組，結合了科技和魔法的世界。",
     "features": [
         "eula",
         "java_version",
         "pid_limit"
     ],
     "docker_images": {
-        "Java 8": "ghcr.io\/ptero-eggs\/yolks:java_8",
-        "Java 11": "ghcr.io\/ptero-eggs\/yolks:java_11"
+        "Java 11（特定版本）": "ghcr.io/ptero-eggs/yolks:java_11",
+        "Java 8（1.16.5 版及以下）": "ghcr.io/ptero-eggs/yolks:java_8"
     },
     "file_denylist": [],
     "startup": "java -server -Xms128M -Xmx{{SERVER_MEMORY}}M -Dterminal.jline=false -Dterminal.ansi=true -Dfml.queryResult=confirm -jar forge.jar nogui",
@@ -27,15 +27,15 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Tekkit SMP Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n\r\napk update\r\napk add --no-cache curl zip unzip jq\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\nBUILD_TYPE=${BUILD_TYPE:-\"recommended\"}\r\n\r\nif [ -z \"$MODPACK_VERSION\" ]; then\r\n  MODPACK_VERSION=v$(curl -s https:\/\/solder.technicpack.net\/api\/modpack\/tekkit-smp | jq -r \".${BUILD_TYPE}\")\r\nfi\r\n\r\necho \"Downloading Tekkit SMP version ${MODPACK_VERSION} (This may take a while!)\"\r\ncurl -sSL \"https:\/\/servers.technicpack.net\/Technic\/servers\/tekkit-smp\/Tekkit-SMP_Server_${MODPACK_VERSION}.zip\" -o \"Tekkit-SMP_Server_${MODPACK_VERSION}.zip\"\r\nunzip -o \"Tekkit-SMP_Server_${MODPACK_VERSION}.zip\"\r\n\r\nrm -rf \"Tekkit-SMP_Server_${MODPACK_VERSION}.zip\"\r\nrm -f RestoreBackup.bat LaunchServer.bat LaunchServer.sh RestoreBackup.sh\r\n\r\nmv forge-1.12.2-*.jar forge.jar\r\n\r\nif [ ! -f server.properties ]; then\r\n  curl -o server.properties https:\/\/raw.githubusercontent.com\/ptero-eggs\/game-eggs\/main\/minecraft\/java\/server.properties\r\nfi\r\n\r\necho \"Done\"",
-            "container": "ghcr.io\/ptero-eggs\/installers:alpine",
+            "script": "#!/bin/ash\r\n# Tekkit SMP Installation Script\r\n#\r\n# Server Files: /mnt/server\r\n\r\napk update\r\napk add --no-cache curl zip unzip jq\r\n\r\nmkdir -p /mnt/server\r\ncd /mnt/server\r\n\r\nBUILD_TYPE=${BUILD_TYPE:-\"recommended\"}\r\n\r\nif [ -z \"$MODPACK_VERSION\" ]; then\r\n  MODPACK_VERSION=v$(curl -s https://solder.technicpack.net/api/modpack/tekkit-smp | jq -r \".${BUILD_TYPE}\")\r\nfi\r\n\r\necho \"Downloading Tekkit SMP version ${MODPACK_VERSION} (This may take a while!)\"\r\ncurl -sSL \"https://servers.technicpack.net/Technic/servers/tekkit-smp/Tekkit-SMP_Server_${MODPACK_VERSION}.zip\" -o \"Tekkit-SMP_Server_${MODPACK_VERSION}.zip\"\r\nunzip -o \"Tekkit-SMP_Server_${MODPACK_VERSION}.zip\"\r\n\r\nrm -rf \"Tekkit-SMP_Server_${MODPACK_VERSION}.zip\"\r\nrm -f RestoreBackup.bat LaunchServer.bat LaunchServer.sh RestoreBackup.sh\r\n\r\nmv forge-1.12.2-*.jar forge.jar\r\n\r\nif [ ! -f server.properties ]; then\r\n  curl -o server.properties https://raw.githubusercontent.com/ptero-eggs/game-eggs/main/minecraft/java/server.properties\r\nfi\r\n\r\necho \"Done\"",
+            "container": "ghcr.io/ptero-eggs/installers:alpine",
             "entrypoint": "ash"
         }
     },
     "variables": [
         {
-            "name": "Modpack Version",
-            "description": "The version of Tekkit SMP to download. \r\n\r\nOverrides BUILD TYPE, if set.",
+            "name": "模組包版本",
+            "description": "要下載的 Tekkit SMP 版本。\r\n\r\n如果設定此項，將覆蓋 BUILD TYPE。",
             "env_variable": "MODPACK_VERSION",
             "default_value": "",
             "user_viewable": true,
@@ -44,8 +44,8 @@
             "field_type": "text"
         },
         {
-            "name": "Build Type",
-            "description": "The type of server jar to download from Technic Solder.",
+            "name": "建置類型",
+            "description": "要從 Technic Solder 下載的伺服器 jar 檔案類型。",
             "env_variable": "BUILD_TYPE",
             "default_value": "recommended",
             "user_viewable": true,
